@@ -1,4 +1,4 @@
-﻿using GestranChecklist.Application.Models;
+﻿using GestranChecklist.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -15,9 +15,9 @@ public class ChecklistController : ControllerBase
 
     [HttpPost]
     [SwaggerOperation(Summary = "Método para criação de um novo Checklist, com ou sem os Itens do Checklist.")]
-    [ProducesResponseType(typeof(ResultViewModel<ChecklistModel>), 200)]
+    [ProducesResponseType(typeof(ResultViewModel<ChecklistDto>), 200)]
     [ProducesResponseType(typeof(ResultViewModel), 400)]
-    public async Task<ActionResult<Checklist>> CreateChecklist(ChecklistModel checklist)
+    public async Task<ActionResult<Checklist>> CreateChecklist(ChecklistDto checklist)
     {
         var result = await _checklistService.CriarChecklist(checklist);
 
@@ -33,7 +33,7 @@ public class ChecklistController : ControllerBase
     [SwaggerOperation(Summary = "Método para adicionar Itens a um Checklist já existente.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(typeof(ResultViewModel), 400)]
-    public async Task<IActionResult> AdicionarItemAoChecklist(int checklistId, [FromBody] ChecklistItemModel itemModel, [FromHeader] string executorId)
+    public async Task<IActionResult> AdicionarItemAoChecklist(int checklistId, [FromBody] ChecklistItemDto itemModel, [FromHeader] string executorId)
     {
         var resultado = await _checklistService.AdicionarItemAoChecklist(checklistId, itemModel, executorId);
 
@@ -61,7 +61,7 @@ public class ChecklistController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPost("{id}")]
     [SwaggerOperation(Summary = "Método para realizar a aprovação de um Checklist.")]
     [ProducesResponseType(201)]
     [ProducesResponseType(typeof(ResultViewModel), 400)]

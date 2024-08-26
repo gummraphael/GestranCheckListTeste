@@ -1,4 +1,4 @@
-﻿namespace GestranChecklist.Application.Models
+﻿namespace GestranChecklist.Application.Dtos
 {
     public class ResultViewModel
     {

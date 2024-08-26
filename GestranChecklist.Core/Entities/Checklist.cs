@@ -22,6 +22,7 @@ public class Checklist : BaseEntity
     public Checklist(string placaVeiculo, TipoChecklistEnum tipoChecklist, string executorId, string supervisorId, bool aprovado, StatusEnum status, DateTime? dataExecucao)
     {
         PlacaVeiculo = placaVeiculo;
+        TipoChecklist = tipoChecklist;
         ExecutorId = executorId;
         SupervisorId = supervisorId;
         Aprovado = aprovado;
@@ -29,4 +30,27 @@ public class Checklist : BaseEntity
         DataExecucao = dataExecucao;
         Itens = new List<ChecklistItem>(); 
     }
+
+    public Checklist CastToModel()
+    {
+        var checklist = new Checklist(PlacaVeiculo, TipoChecklist, ExecutorId, SupervisorId, Aprovado, Status, DataExecucao);
+
+        //foreach (var item in Itens)
+        //{
+        //    checklist.Itens.Add(item.CastTo());
+        //}
+
+        return checklist;
+    }
+
+    //public void Update(string placaVeiculo, string executorId, string supervisorId, bool aprovado, StatusEnum status, DateTime dataExecucao)
+    //{
+    //    PlacaVeiculo = placaVeiculo;
+    //    ExecutorId = executorId;
+    //    SupervisorId = supervisorId;
+    //    Aprovado = aprovado;
+    //    Status = status;
+    //    DataExecucao = dataExecucao;
+    //    Itens = new List<ChecklistItem>();
+    //}
 }

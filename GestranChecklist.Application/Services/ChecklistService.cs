@@ -1,4 +1,4 @@
-﻿using GestranChecklist.Application.Models;
+﻿using GestranChecklist.Application.Dtos;
 using GestranChecklist.Core.Enum;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,33 +11,56 @@ public class ChecklistService : IChecklistService
         _checklistRepository = checklistRepository;
     }
 
-    public async Task<ResultViewModel<Checklist>> CriarChecklist(ChecklistModel model)
+    public async Task<ResultViewModel<ChecklistDto>> CriarChecklist(ChecklistDto model)
     {
-        if (await _checklistRepository.ExisteChecklistParaVeiculo(model.PlacaVeiculo))
+        var checklist = model.CastToEntity();
+
+        //Verifica se já existe um checklist em aberto para o veículo
+        if (await _checklistRepository.ExisteChecklistParaVeiculo(checklist.PlacaVeiculo))
         {
-            return ResultViewModel<Checklist>.Error("Já existe um checklist em aberto para este veículo.");
+            return ResultViewModel<ChecklistDto>.Error("Já existe um checklist em aberto para este veículo.");
         }
 
-        //model.Status = model.Itens.IsNullOrEmpty() ? model.Status : StatusEnum.EmExecucao;
+        IEnumerable<ChecklistItemDto> itensComRiscoAlto = ItensComAltoRisco(checklist);
 
-        var checklist = model.CastToEntity();
-        checklist.DataExecucao = DateTime.UtcNow;
+        //Não será possível concluir um checklist se existir algum item com alto risco
+        if (itensComRiscoAlto.Any() && checklist.Status == StatusEnum.Concluido)
+        {
+            var mensagemErro = "Não foi possível aprovar o checklist, pois existem itens com alto risco de criticidade:\n\n";
 
+            foreach (var item in itensComRiscoAlto)
+            {
+                mensagemErro += $"- Nome do item: {item.Nome}\n- Observação: {item.Observacao}\n\n";
+            }
+
+            return ResultViewModel<ChecklistDto>.Error(mensagemErro);
+        }
+
+        //Não é possível criar um checklist sem que ao menos um item exista na lista
+        if (checklist.Status == StatusEnum.Concluido && checklist.Itens.IsNullOrEmpty())
+        {
+            return ResultViewModel<ChecklistDto>.Error("Não é possível concluir um Checklist sem itens para ser verificados.");
+        }
+
+        //Se for o próprio supervisor que está executando o checklist,
+        //então a propriedade Aprovado, poderá ser qualquer valor (true ou false)
         if (checklist.ExecutorId != checklist.SupervisorId)
         {
             checklist.Aprovado = false;
         }
 
-        if (model.Status == StatusEnum.Concluido && model.Itens.IsNullOrEmpty())
-        {
-            model.Status = StatusEnum.EmExecucao;
-        }
+        checklist.DataExecucao = DateTime.UtcNow;
 
         var resultado = await _checklistRepository.AdicionarChecklist(checklist);
-        return ResultViewModel<Checklist>.Success(resultado);
+
+        model.ExecutorId = resultado.ExecutorId;
+        model.SupervisorId = resultado.SupervisorId;
+        model.TipoChecklist = resultado.TipoChecklist;
+
+        return ResultViewModel<ChecklistDto>.Success(model);
     }
 
-    public async Task<ResultViewModel> AdicionarItemAoChecklist(int checklistId, ChecklistItemModel itemModel, string executorId)
+    public async Task<ResultViewModel> AdicionarItemAoChecklist(int checklistId, ChecklistItemDto itemModel, string executorId)
     {
         var checklist = await _checklistRepository.ObterChecklistPorId(checklistId);
         if (checklist == null)
@@ -76,13 +99,7 @@ public class ChecklistService : IChecklistService
             return ResultViewModel.Error("Checklist não encontrado.");
         }
 
-        var itensComRiscoAlto = checklist.Itens
-            .Where(x => x.NilvelDeRisco == RiscoEnum.Alto)
-            .Select(x => new ChecklistItemModel
-            {
-                Nome = x.Nome,
-                Observacao = x.Observacao
-            });
+        IEnumerable<ChecklistItemDto> itensComRiscoAlto = ItensComAltoRisco(checklist);
 
         if (itensComRiscoAlto.Any())
         {
@@ -107,5 +124,45 @@ public class ChecklistService : IChecklistService
     {
         var checklists = await _checklistRepository.ListarChecklists();
         return ResultViewModel<List<Checklist>>.Success(checklists);
+    }
+
+    public async Task<ResultViewModel<ChecklistDto>> AtualizarChecklist(ChecklistDto checklistModel)
+    {
+        var checklist = await _checklistRepository.ObterChecklistPorId(1);
+
+        if (checklist == null)
+        {
+            return ResultViewModel<ChecklistDto>.Error("Checklist não encontrado.");
+        }
+
+        checklist = checklistModel.CastToEntity();
+
+        //checklist.Update(checklistModel.PlacaVeiculo, checklistModel.ExecutorId, checklistModel.SupervisorId, 
+        //                 checklistModel.Aprovado, checklistModel.Status, checklistModel.DataExecucao);
+
+        await _checklistRepository.AtualizarChecklist(checklist);
+
+        return ResultViewModel<ChecklistDto>.Success(checklistModel);
+    }
+
+    private static IEnumerable<ChecklistItemDto> ItensComAltoRisco(Checklist checklist)
+    {
+        return checklist.Itens
+                    .Where(x => x.NilvelDeRisco == RiscoEnum.Alto)
+                    .Select(x => new ChecklistItemDto
+                    {
+                        Nome = x.Nome,
+                        Observacao = x.Observacao
+                    });
+    }
+
+    Task<ResultViewModel<ChecklistDto>> IChecklistService.ObterChecklist(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<ResultViewModel<List<ChecklistDto>>> IChecklistService.ListarChecklists()
+    {
+        throw new NotImplementedException();
     }
 }

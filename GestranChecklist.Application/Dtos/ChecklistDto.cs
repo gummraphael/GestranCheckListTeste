@@ -1,8 +1,8 @@
 ﻿using GestranChecklist.Core.Enum;
 
-namespace GestranChecklist.Application.Models
+namespace GestranChecklist.Application.Dtos
 {
-    public class ChecklistModel
+    public class ChecklistDto
     {
         public string PlacaVeiculo { get; set; }
         public TipoChecklistEnum TipoChecklist { get; set; }
@@ -12,7 +12,7 @@ namespace GestranChecklist.Application.Models
         public StatusEnum Status { get; set; }
         public DateTime DataExecucao { get; set; }
 
-        public IEnumerable<ChecklistItemModel> Itens { get; set; } = new List<ChecklistItemModel>();
+        public IEnumerable<ChecklistItemDto> Itens { get; set; } = new List<ChecklistItemDto>();
 
         public Checklist CastToEntity()
         {
