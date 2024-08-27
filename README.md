@@ -6,8 +6,6 @@ O objetivo do projeto é realizar checklists de entrada e saída nos veículos, 
 
 Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
 
-Consulte **[Implantação](#-implanta%C3%A7%C3%A3o)** para saber como implantar o projeto.
-
 ### 📋 Pré-requisitos
 
 Antes de começar, você precisará ter instalado em sua máquina:
@@ -32,11 +30,11 @@ git clone https://github.com/gummraphael/GestranCheckListTeste.git
 ```bash
 dotnet restore
 ```
-                                     
+
 ## ⚙️ Configuração do Banco de Dados
 
-Abra o arquivo `appsettings.json` e configure a string de conexão em `GestranCheckListConnectionString`.
-
+Abra o arquivo `appsettings.json` e configure a string de conexão em `GestranCheckListConnectionString`.  
+  
 ## Criação e Execução de Migrações
 
 ### Criar a Migração
