@@ -1,9 +1,14 @@
-﻿namespace GestranChecklist.Core.Enum
+﻿using System.Runtime.Serialization;
+
+namespace GestranChecklist.Core.Enum
 {
     public enum RiscoEnum
     {
-        Baixo = 0,
-        Medio = 1,
-        Alto = 2
+        [EnumMember(Value = "Baixo")]
+        Baixo,
+        [EnumMember(Value = "Médio")]
+        Medio,
+        [EnumMember(Value = "Alto")]
+        Alto
     }
 }

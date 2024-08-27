@@ -15,9 +15,9 @@ public class ChecklistController : ControllerBase
 
     [HttpPost]
     [SwaggerOperation(Summary = "Método para criação de um novo Checklist, com ou sem os Itens do Checklist.")]
-    [ProducesResponseType(typeof(ResultViewModel<ChecklistDto>), 200)]
+    [ProducesResponseType(200)]
     [ProducesResponseType(typeof(ResultViewModel), 400)]
-    public async Task<ActionResult<Checklist>> CreateChecklist(ChecklistDto checklist)
+    public async Task<IActionResult> CriarChecklist(ChecklistDto checklist)
     {
         var result = await _checklistService.CriarChecklist(checklist);
 
@@ -26,7 +26,7 @@ public class ChecklistController : ControllerBase
             return BadRequest(result);
         }
 
-        return Ok(result);
+        return Ok();
     }
 
     [HttpPost("{checklistId}/itens")]
@@ -49,7 +49,7 @@ public class ChecklistController : ControllerBase
     [SwaggerOperation(Summary = "Método para buscar um Checklist por Id.")]
     [ProducesResponseType(typeof(ResultViewModel<Checklist>), 200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<Checklist>> GetChecklist(int id)
+    public async Task<IActionResult> ObterChecklist(int id)
     {
         var result = await _checklistService.ObterChecklist(id);
 
@@ -65,7 +65,7 @@ public class ChecklistController : ControllerBase
     [SwaggerOperation(Summary = "Método para realizar a aprovação de um Checklist.")]
     [ProducesResponseType(201)]
     [ProducesResponseType(typeof(ResultViewModel), 400)]
-    public async Task<IActionResult> ApproveChecklist(int id, string supervisorId)
+    public async Task<IActionResult> AprovarChecklist(int id, string supervisorId)
     {
         var resultado = await _checklistService.AprovarChecklist(id, supervisorId);
 
@@ -80,9 +80,25 @@ public class ChecklistController : ControllerBase
     [HttpGet]
     [SwaggerOperation(Summary = "Método que retorna todos os checklists existentes.")]
     [ProducesResponseType(typeof(ResultViewModel<Checklist>), 200)]
-    public async Task<ActionResult<List<Checklist>>> GetAllChecklists()
+    public async Task<IActionResult> ObterTodosChecklists()
     {
         var checklists = await _checklistService.ListarChecklists();
         return Ok(checklists);
+    }
+
+    [HttpPut("{id}")]
+    [SwaggerOperation(Summary = "Método que atualiza um checklist.")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> AtualizarChecklist(int id, [FromBody] ChecklistDto checklistDto)
+    {
+        var resultado = await _checklistService.AtualizarChecklist(id, checklistDto);
+
+        if (!resultado.IsSuccess)
+        {
+            return NotFound(resultado.Message);
+        }
+
+        return NoContent();
     }
 }

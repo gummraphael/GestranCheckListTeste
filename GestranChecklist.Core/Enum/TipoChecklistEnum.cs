@@ -1,8 +1,12 @@
-﻿namespace GestranChecklist.Core.Enum
+﻿using System.Runtime.Serialization;
+
+namespace GestranChecklist.Core.Enum
 {
     public enum TipoChecklistEnum
     {
-        Entrada = 0,
-        Saida = 1
+        [EnumMember(Value = "Entrada")]
+        Entrada,
+        [EnumMember(Value = "Saída")]
+        Saida
     }
 }

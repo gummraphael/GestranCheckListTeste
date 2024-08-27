@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-public interface IChecklistRepository
+﻿public interface IChecklistRepository
 {
     Task<Checklist> AdicionarChecklist(Checklist checklist);
     Task<Checklist> ObterChecklistPorId(int id);

@@ -5,11 +5,17 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestranChecklist.API", "gestran-checklist\GestranChecklist.API.csproj", "{AFE4EA68-82B7-47B3-89C3-1024C80FBA0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestranChecklist.Application", "GestranChecklist.Application\GestranChecklist.Application.csproj", "{B0290BFB-AE80-4E96-A168-960E650E28FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestranChecklist.Application", "GestranChecklist.Application\GestranChecklist.Application.csproj", "{B0290BFB-AE80-4E96-A168-960E650E28FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestranChecklist.Core", "GestranChecklist.Core\GestranChecklist.Core.csproj", "{6AFA2C5D-9994-42C2-BA60-267FEABB7F01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestranChecklist.Core", "GestranChecklist.Core\GestranChecklist.Core.csproj", "{6AFA2C5D-9994-42C2-BA60-267FEABB7F01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestranChecklist.Infrastructure", "GestranChecklist.Infrastructure\GestranChecklist.Infrastructure.csproj", "{9A72A3D2-733B-480E-94C9-5D6CAC38C25E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestranChecklist.Infrastructure", "GestranChecklist.Infrastructure\GestranChecklist.Infrastructure.csproj", "{9A72A3D2-733B-480E-94C9-5D6CAC38C25E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0C65FA8F-AD9D-475B-BFF5-99A482BCBF9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AE0A6406-38C4-4BDB-B880-20EE96D85A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestranChecklist.Testes", "GestranChecklist.Testes\GestranChecklist.Testes.csproj", "{75D3E175-05D0-410D-9E9C-B20AB4DE5621}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,20 @@ Global
 		{9A72A3D2-733B-480E-94C9-5D6CAC38C25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A72A3D2-733B-480E-94C9-5D6CAC38C25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A72A3D2-733B-480E-94C9-5D6CAC38C25E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D3E175-05D0-410D-9E9C-B20AB4DE5621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D3E175-05D0-410D-9E9C-B20AB4DE5621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75D3E175-05D0-410D-9E9C-B20AB4DE5621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75D3E175-05D0-410D-9E9C-B20AB4DE5621}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AFE4EA68-82B7-47B3-89C3-1024C80FBA0D} = {0C65FA8F-AD9D-475B-BFF5-99A482BCBF9B}
+		{B0290BFB-AE80-4E96-A168-960E650E28FC} = {0C65FA8F-AD9D-475B-BFF5-99A482BCBF9B}
+		{6AFA2C5D-9994-42C2-BA60-267FEABB7F01} = {0C65FA8F-AD9D-475B-BFF5-99A482BCBF9B}
+		{9A72A3D2-733B-480E-94C9-5D6CAC38C25E} = {0C65FA8F-AD9D-475B-BFF5-99A482BCBF9B}
+		{75D3E175-05D0-410D-9E9C-B20AB4DE5621} = {AE0A6406-38C4-4BDB-B880-20EE96D85A05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {842EF4DF-5BB5-49AA-8F42-DCE29DC7B72C}

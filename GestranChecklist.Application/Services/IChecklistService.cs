@@ -7,4 +7,5 @@ public interface IChecklistService
     Task<ResultViewModel<ChecklistDto>> ObterChecklist(int id);
     Task<ResultViewModel> AprovarChecklist(int id, string supervisorId);
     Task<ResultViewModel<List<ChecklistDto>>> ListarChecklists();
+    Task<ResultViewModel<ChecklistDto>> AtualizarChecklist(int id, ChecklistDto checklistDto);
 }

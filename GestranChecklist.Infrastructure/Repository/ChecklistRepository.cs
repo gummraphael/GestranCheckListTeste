@@ -27,7 +27,7 @@ public class ChecklistRepository : IChecklistRepository
 
     public async Task<List<Checklist>> ListarChecklists()
     {
-        return await _context.Checklists.ToListAsync();
+        return await _context.Checklists.Include(c => c.Itens).ToListAsync();
     }
 
     public async Task AtualizarChecklist(Checklist checklist)

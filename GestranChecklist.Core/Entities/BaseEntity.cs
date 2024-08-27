@@ -10,7 +10,6 @@ namespace GestranChecklist.Core.Entities
     {
         protected BaseEntity()
         {
-
         }
 
         public int Id { get; private set;}
